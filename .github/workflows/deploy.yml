@@ -12,12 +12,13 @@ jobs:
     environment: testing
     runs-on: ubuntu-latest # the ubuntu machine just host the docker image
     # keep in mind, the steps run in the container based on the node image and have no direct access to the machine and its tools. Steps run in the environment defined in the container.
+    # if this workflow is not run in a container, no automatic networking will be used. Means MONGODB_CLUSTER_ADDRESS must be adapted. Localhost IP address & ports must be provided instead -> 127.0.0.1:27017 (mongo db default port 27017)
     container: # node:16 # specify the docker container image. Can be a predefined image available at https://hub.docker.com / e. g. node https://hub.docker.com/_/node
       image: node:16 # alternative to definition directly in container: ...; This syntax is used to pass further informations to the container like e. g. environment vars values
       # env: # define env vars here, check out official image documentation if some special vars are required
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb # connection protocol must be mongodb (see documentation)
-      MONGODB_CLUSTER_ADDRESS: mongodb # use the defined mongodb identifier to connect to db hosted in container
+      MONGODB_CLUSTER_ADDRESS: mongodb # use the defined mongodb identifier to connect to db hosted in container; use 127.0.0.1:27017 if this workflow does not run in container but service is hosted in container
       MONGODB_USERNAME: root # use the username defined for docker service container
       MONGODB_PASSWORD: example # use the password defined for docker service container
       PORT: 8080
@@ -25,6 +26,8 @@ jobs:
     services: # add docker service containers e. g. mongodb container
       mongodb: # custom identifier mongodb (could be any name)
         image: mongo # required image key to run service in container; mongo image is a official docker image https://hub.docker.com/_/mongo
+        # ports: # define ports if this workflow does not run in container but service is hosted in container
+          # - 27017:27017 # open port; forward port 27017 to the runner machine port 27017
         env: # image mongo require additional configuration (see documentation); container must set those env vars
           MONGO_INITDB_ROOT_USERNAME: root # username is required
           MONGO_INITDB_ROOT_PASSWORD: example # password is required
