@@ -10,7 +10,11 @@ env:
 jobs:
   test:
     environment: testing
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # the ubuntu machine just host the docker image
+    # keep in mind, the steps run in the container based on the node image and have no direct access to the machine and its tools. Steps run in the environment defined in the container.
+    container: # node:16 # specify the docker container image. Can be a predefined image available at https://hub.docker.com / e. g. node https://hub.docker.com/_/node
+      image: node:16 # alternative to definition directly in container: ...; This syntax is used to pass further informations to the container like e. g. environment vars values
+      # env: # define env vars here, check out official image documentation if some special vars are required
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
       MONGODB_CLUSTER_ADDRESS: cluster0.ntrwp.mongodb.net
