@@ -18,8 +18,8 @@ jobs:
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb # connection protocol must be mongodb (see documentation)
       MONGODB_CLUSTER_ADDRESS: mongodb # use the defined mongodb identifier to connect to db hosted in container
-      MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
-      MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+      MONGODB_USERNAME: root # use the username defined for docker service container
+      MONGODB_PASSWORD: example # use the password defined for docker service container
       PORT: 8080
     # service runs side by side with the other steps executed
     services: # add docker service containers e. g. mongodb container
